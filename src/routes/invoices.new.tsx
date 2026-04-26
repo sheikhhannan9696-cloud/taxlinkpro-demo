@@ -341,7 +341,7 @@ function CreateInvoicePage() {
                   <ReviewCard label="Seller" title={profile.name} hint={`NTN ${profile.ntn} · ${profile.strn}`} />
                   <ReviewCard label="Buyer" title={buyer.name} hint={`${buyer.code} · ${buyer.city}`} />
                   <ReviewCard label="Items" title={`${items.length} line items`} hint={`Subtotal ${currency(subtotal)}`} />
-                  <ReviewCard label="Environment" title={env === "production" ? "Production" : `Sandbox · ${scenario}`} hint={env === "sandbox" ? scenarios.find(s => s.code === scenario)?.name : "Live submission"} />
+                  <ReviewCard label="Environment" title={env === "production" ? "Production" : `Sandbox · ${scenario}`} hint={env === "sandbox" ? (scenarios.find(s => s.code === scenario)?.name ?? "") : "Live submission"} />
                 </div>
                 {env === "production" && (
                   <div className="flex items-start gap-2.5 rounded-lg border border-warning/30 bg-warning/10 p-3 text-sm text-warning-foreground">
