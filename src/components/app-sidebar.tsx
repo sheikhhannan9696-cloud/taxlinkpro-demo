@@ -7,7 +7,6 @@ import {
   Users,
   Package,
   Building2,
-  FlaskConical,
   BarChart3,
   Download,
   Settings,
@@ -31,7 +30,6 @@ const masterData: NavItem[] = [
 ];
 
 const insights: NavItem[] = [
-  { to: "/sandbox", label: "Sandbox Scenarios", icon: FlaskConical, badge: "72%" },
   { to: "/reports", label: "Reports & Analytics", icon: BarChart3 },
   { to: "/downloads", label: "Download Center", icon: Download },
 ];
@@ -104,20 +102,6 @@ export function AppSidebar({ onNavigate }: { onNavigate?: () => void }) {
         <NavGroup title="System" items={system} pathname={location.pathname} />
       </div>
 
-      <div className="border-t border-sidebar-border p-3">
-        <div className="rounded-lg bg-sidebar-accent/40 p-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-sidebar-accent-foreground">Go-Live Readiness</span>
-            <span className="text-xs font-semibold text-sidebar-primary">72%</span>
-          </div>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-sidebar/60">
-            <div className="h-full rounded-full bg-gradient-to-r from-sidebar-primary to-primary" style={{ width: "72%" }} />
-          </div>
-          <Link to="/sandbox" className="mt-2 block text-[11px] text-sidebar-foreground/70 hover:text-sidebar-accent-foreground">
-            5 of 8 required scenarios passed →
-          </Link>
-        </div>
-      </div>
     </aside>
   );
 }

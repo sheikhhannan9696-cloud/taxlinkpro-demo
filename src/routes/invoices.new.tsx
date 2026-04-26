@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { businessProfiles, buyers, products, scenarios, currency } from "@/lib/mock-data";
+import { businessProfiles, buyers, products, currency } from "@/lib/mock-data";
 import { useApp } from "@/lib/app-state";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -61,7 +61,7 @@ function CreateInvoicePage() {
   const [step, setStep] = useState(1);
   const [profileId, setProfileId] = useState(businessProfiles[0].id);
   const [buyerId, setBuyerId] = useState(buyers[0].id);
-  const [scenario, setScenario] = useState(scenarios[0].code);
+  
   const [items, setItems] = useState<LineItem[]>([
     { productId: products[0].id, qty: 10, rate: products[0].rate, taxRate: products[0].taxRate },
   ]);
@@ -196,22 +196,6 @@ function CreateInvoicePage() {
                       </SelectContent>
                     </Select>
                   </div>
-                  {env === "sandbox" && (
-                    <div className="space-y-1.5">
-                      <Label>Sandbox scenario</Label>
-                      <Select value={scenario} onValueChange={setScenario}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          {scenarios.map((s) => (
-                            <SelectItem key={s.code} value={s.code}>{s.code} — {s.name}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <p className="text-xs text-muted-foreground">
-                        {scenarios.find((s) => s.code === scenario)?.description}
-                      </p>
-                    </div>
-                  )}
                 </div>
               </div>
             )}
@@ -341,7 +325,7 @@ function CreateInvoicePage() {
                   <ReviewCard label="Seller" title={profile.name} hint={`NTN ${profile.ntn} · ${profile.strn}`} />
                   <ReviewCard label="Buyer" title={buyer.name} hint={`${buyer.code} · ${buyer.city}`} />
                   <ReviewCard label="Items" title={`${items.length} line items`} hint={`Subtotal ${currency(subtotal)}`} />
-                  <ReviewCard label="Environment" title={env === "production" ? "Production" : `Sandbox · ${scenario}`} hint={env === "sandbox" ? (scenarios.find(s => s.code === scenario)?.name ?? "") : "Live submission"} />
+                  <ReviewCard label="Environment" title={env === "production" ? "Production" : "Sandbox"} hint={env === "production" ? "Live submission" : "Test submission"} />
                 </div>
                 {env === "production" && (
                   <div className="flex items-start gap-2.5 rounded-lg border border-warning/30 bg-warning/10 p-3 text-sm text-warning-foreground">
@@ -384,7 +368,7 @@ function CreateInvoicePage() {
             <div className="space-y-3 p-5 text-sm">
               <SummaryRow label="Seller" value={profile.name} />
               <SummaryRow label="Buyer" value={buyer.name} />
-              {env === "sandbox" && <SummaryRow label="Scenario" value={scenario} />}
+              
               <div className="my-2 border-t border-border" />
               <SummaryRow label="Subtotal" value={currency(subtotal)} mono />
               <SummaryRow label="Tax" value={currency(tax)} mono />
