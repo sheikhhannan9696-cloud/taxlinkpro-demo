@@ -1,6 +1,6 @@
-import type { InvoiceStatus, ScenarioStatus, Environment } from "@/lib/mock-data";
+import type { InvoiceStatus, Environment } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
-import { CheckCircle2, XCircle, Clock, FileEdit, AlertCircle, PlayCircle, RotateCw, Circle } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, FileEdit } from "lucide-react";
 
 export function StatusBadge({ status }: { status: InvoiceStatus }) {
   const map = {
@@ -34,22 +34,6 @@ export function EnvBadge({ env }: { env: Environment }) {
   );
 }
 
-export function ScenarioStatusBadge({ status }: { status: ScenarioStatus }) {
-  const map = {
-    not_started: { label: "Not started", className: "bg-muted text-muted-foreground border-border", Icon: Circle },
-    in_progress: { label: "In progress", className: "bg-info/10 text-info border-info/20", Icon: PlayCircle },
-    passed: { label: "Passed", className: "bg-success/10 text-success border-success/20", Icon: CheckCircle2 },
-    failed: { label: "Failed", className: "bg-destructive/10 text-destructive border-destructive/20", Icon: XCircle },
-    retry: { label: "Retry needed", className: "bg-warning/10 text-warning-foreground border-warning/20", Icon: RotateCw },
-  } as const;
-  const { label, className, Icon } = map[status];
-  return (
-    <span className={cn("inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium", className)}>
-      <Icon className="h-3 w-3" />
-      {label}
-    </span>
-  );
-}
 
 export function Trend({ value, suffix = "%" }: { value: number; suffix?: string }) {
   const positive = value >= 0;
