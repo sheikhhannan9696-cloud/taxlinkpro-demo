@@ -325,7 +325,7 @@ function CreateInvoicePage() {
                   <ReviewCard label="Seller" title={profile.name} hint={`NTN ${profile.ntn} · ${profile.strn}`} />
                   <ReviewCard label="Buyer" title={buyer.name} hint={`${buyer.code} · ${buyer.city}`} />
                   <ReviewCard label="Items" title={`${items.length} line items`} hint={`Subtotal ${currency(subtotal)}`} />
-                  <ReviewCard label="Environment" title={env === "production" ? "Production" : `Sandbox · ${scenario}`} hint={env === "sandbox" ? (scenarios.find(s => s.code === scenario)?.name ?? "") : "Live submission"} />
+                  <ReviewCard label="Environment" title={env === "production" ? "Production" : "Sandbox"} hint={env === "production" ? "Live submission" : "Test submission"} />
                 </div>
                 {env === "production" && (
                   <div className="flex items-start gap-2.5 rounded-lg border border-warning/30 bg-warning/10 p-3 text-sm text-warning-foreground">
@@ -368,7 +368,7 @@ function CreateInvoicePage() {
             <div className="space-y-3 p-5 text-sm">
               <SummaryRow label="Seller" value={profile.name} />
               <SummaryRow label="Buyer" value={buyer.name} />
-              {env === "sandbox" && <SummaryRow label="Scenario" value={scenario} />}
+              
               <div className="my-2 border-t border-border" />
               <SummaryRow label="Subtotal" value={currency(subtotal)} mono />
               <SummaryRow label="Tax" value={currency(tax)} mono />
