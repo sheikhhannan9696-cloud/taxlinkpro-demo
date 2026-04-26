@@ -2,7 +2,7 @@
 
 export type Environment = "sandbox" | "production";
 export type InvoiceStatus = "submitted" | "failed" | "draft" | "pending";
-export type ScenarioStatus = "not_started" | "in_progress" | "passed" | "failed" | "retry";
+
 
 export const currency = (n: number) =>
   new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR", maximumFractionDigits: 0 }).format(n);
@@ -121,31 +121,6 @@ export const businessProfiles: BusinessProfile[] = [
   { id: "2", name: "Acme Logistics Division", ntn: "0987655-1", strn: "32-77-0987-002-23", province: "Punjab", address: "Industrial Estate, Sundar, Lahore", isDefault: false, invoicesIssued: 104 },
 ];
 
-export type Scenario = {
-  id: string;
-  code: string;
-  name: string;
-  description: string;
-  category: string;
-  saleType: string;
-  status: ScenarioStatus;
-  attempts: number;
-  required: boolean;
-  jsonFile: string;
-};
-
-export const scenarios: Scenario[] = [
-  { id: "1", code: "SN001", name: "Standard Rate Goods - Registered Buyer", description: "Sale of goods at 17% standard rate to a registered buyer with valid STRN.", category: "Goods", saleType: "Goods at Standard Rate", status: "passed", attempts: 1, required: true, jsonFile: "sn001.json" },
-  { id: "2", code: "SN002", name: "Standard Rate Goods - Unregistered Buyer", description: "Sale to an unregistered buyer using CNIC instead of STRN.", category: "Goods", saleType: "Goods at Standard Rate", status: "passed", attempts: 2, required: true, jsonFile: "sn002.json" },
-  { id: "3", code: "SN003", name: "Zero-Rated Export", description: "Export sale at 0% rate with required export documentation fields.", category: "Export", saleType: "Export", status: "passed", attempts: 1, required: true, jsonFile: "sn003.json" },
-  { id: "4", code: "SN004", name: "Services - Provincial Sales Tax", description: "Service invoice subject to provincial sales tax (Sindh / Punjab variant).", category: "Services", saleType: "Services", status: "failed", attempts: 3, required: true, jsonFile: "sn004.json" },
-  { id: "5", code: "SN005", name: "Reduced Rate Goods", description: "Goods notified under SRO with reduced tax rate; requires SRO schedule + serial.", category: "Goods", saleType: "Goods at Reduced Rate", status: "in_progress", attempts: 1, required: true, jsonFile: "sn005.json" },
-  { id: "6", code: "SN006", name: "Pharmaceutical Exempt", description: "Exempt pharmaceutical product invoice; tax fields must be zero.", category: "Pharma", saleType: "Pharmaceutical", status: "passed", attempts: 1, required: true, jsonFile: "sn006.json" },
-  { id: "7", code: "SN007", name: "Further Tax Applicable", description: "Sale to unregistered buyer requiring further tax of 4%.", category: "Goods", saleType: "Goods at Standard Rate", status: "not_started", attempts: 0, required: true, jsonFile: "sn007.json" },
-  { id: "8", code: "SN008", name: "Withholding by Buyer", description: "Sales tax withheld by the buyer; net payable adjusted accordingly.", category: "Goods", saleType: "Goods at Standard Rate", status: "not_started", attempts: 0, required: true, jsonFile: "sn008.json" },
-  { id: "9", code: "SN009", name: "FED in ST Mode", description: "Federal Excise Duty payable in sales tax mode.", category: "FED", saleType: "Goods at Standard Rate", status: "retry", attempts: 2, required: false, jsonFile: "sn009.json" },
-  { id: "10", code: "SN010", name: "Fixed Notified Value", description: "Goods with FBR-notified fixed value override.", category: "Goods", saleType: "Goods at Standard Rate", status: "not_started", attempts: 0, required: false, jsonFile: "sn010.json" },
-];
 
 export type Draft = {
   id: string;
