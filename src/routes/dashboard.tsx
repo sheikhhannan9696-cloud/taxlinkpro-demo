@@ -13,7 +13,6 @@ import {
   FileJson,
   Send,
   Download,
-  ArrowUpRight,
   AlertTriangle,
   Activity,
   ArrowRight,
@@ -40,7 +39,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Progress } from "@/components/ui/progress";
+
 import {
   invoices,
   kpis,
