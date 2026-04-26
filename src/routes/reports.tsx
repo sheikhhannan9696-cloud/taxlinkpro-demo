@@ -89,8 +89,6 @@ function ReportsPage() {
           <TabsTrigger value="revenue">Revenue</TabsTrigger>
           <TabsTrigger value="buyers">Buyers</TabsTrigger>
           <TabsTrigger value="products">Products</TabsTrigger>
-          <TabsTrigger value="tax">Tax</TabsTrigger>
-          <TabsTrigger value="submission">Submission</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -236,47 +234,6 @@ function ReportsPage() {
           </ChartCard>
         </TabsContent>
 
-        <TabsContent value="tax" className="space-y-4">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <MetricCard label="Tax collected" value={currency(kpis.taxCollectedMTD)} trend={15} />
-            <MetricCard label="Standard rate" value={currency(5840000)} />
-            <MetricCard label="Services" value={currency(1120000)} />
-            <MetricCard label="Withheld" value={currency(200000)} trend={-5} />
-          </div>
-          <ChartCard title="Tax composition" subtitle="By category">
-            <ResponsiveContainer width="100%" height={340}>
-              <PieChart>
-                <Pie data={taxBreakdown} dataKey="value" nameKey="name" innerRadius={70} outerRadius={130} paddingAngle={2}>
-                  {taxBreakdown.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-                </Pie>
-                <Tooltip contentStyle={tipStyle} formatter={(v: number) => currency(v)} />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </ChartCard>
-        </TabsContent>
-
-        <TabsContent value="submission" className="space-y-4">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <MetricCard label="Submission rate" value="98.4%" trend={2} />
-            <MetricCard label="Avg latency" value="1.4s" trend={-8} />
-            <MetricCard label="Failures" value="38" trend={-22} />
-            <MetricCard label="Sandbox runs" value="186" trend={31} />
-          </div>
-          <ChartCard title="Daily submission performance" subtitle="Success vs failed">
-            <ResponsiveContainer width="100%" height={340}>
-              <BarChart data={submissionPerformance}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                <XAxis dataKey="day" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={tipStyle} />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Bar dataKey="success" stackId="a" fill="var(--chart-3)" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="failed" stackId="a" fill="var(--destructive)" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartCard>
-        </TabsContent>
       </Tabs>
     </AppShell>
   );
