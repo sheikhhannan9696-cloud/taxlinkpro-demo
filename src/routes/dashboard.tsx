@@ -86,7 +86,7 @@ function DashboardPage() {
         <MetricCard label="Buyers" value={num(kpis.buyers)} trend={4} icon={<Users className="h-4 w-4" />} hint="12 added this month" />
         <MetricCard label="Products" value={num(kpis.products)} trend={2} icon={<Package className="h-4 w-4" />} hint="Catalog health: good" />
         <MetricCard label="Revenue (MTD)" value={currency(kpis.revenueMTD)} trend={17} icon={<TrendingUp className="h-4 w-4" />} hint="vs. last month" />
-        <MetricCard label="Sandbox readiness" value={`${kpis.readiness}%`} icon={<ShieldCheck className="h-4 w-4" />} hint="5 of 8 required passed" />
+        <MetricCard label="Tax collected (MTD)" value={currency(kpis.taxCollectedMTD)} trend={15} icon={<ShieldCheck className="h-4 w-4" />} hint="vs. last month" />
       </div>
 
       {/* Charts row */}
@@ -198,26 +198,6 @@ function DashboardPage() {
         </div>
 
         <div className="space-y-4">
-          {/* Sandbox readiness */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-card">
-            <div className="mb-3 flex items-center justify-between">
-              <div className="text-sm font-semibold">Go-Live Readiness</div>
-              <ShieldCheck className="h-4 w-4 text-primary" />
-            </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-semibold tabular-nums">72%</span>
-              <span className="text-xs text-muted-foreground">5 of 8 required scenarios</span>
-            </div>
-            <Progress value={72} className="mt-3" />
-            <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-              <div><div className="text-sm font-semibold tabular-nums text-success">5</div><div className="text-[10px] text-muted-foreground">Passed</div></div>
-              <div><div className="text-sm font-semibold tabular-nums text-warning-foreground">2</div><div className="text-[10px] text-muted-foreground">In progress</div></div>
-              <div><div className="text-sm font-semibold tabular-nums">3</div><div className="text-[10px] text-muted-foreground">Remaining</div></div>
-            </div>
-            <Button asChild variant="outline" size="sm" className="mt-4 w-full">
-              <Link to="/sandbox">Continue testing <ArrowUpRight className="h-3 w-3" /></Link>
-            </Button>
-          </div>
 
           {/* Failures */}
           <div className="rounded-xl border border-border bg-card p-5 shadow-card">
