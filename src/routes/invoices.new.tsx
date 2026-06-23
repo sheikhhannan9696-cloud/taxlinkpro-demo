@@ -30,6 +30,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { businessProfiles, buyers, products, currency } from "@/lib/mock-data";
 import { useApp } from "@/lib/app-state";
 import { cn } from "@/lib/utils";
