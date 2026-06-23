@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Search, Filter, Download, Send, Upload, FileJson, MoreHorizontal, Eye, Trash2, Plus } from "lucide-react";
+import { Search, Filter, Download, Send, FileJson, MoreHorizontal, Eye, Trash2, Plus } from "lucide-react";
 import { AppShell, PageHeader } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
