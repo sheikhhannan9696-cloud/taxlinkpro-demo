@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Bell, Search, Plus, Sun, Moon, Menu, ChevronDown, LogOut, Settings as SettingsIcon, User } from "lucide-react";
+import { Bell, Search, Plus, Sun, Moon, Menu, ChevronDown, LogOut, Settings as SettingsIcon, User, Lock } from "lucide-react";
+import { toast } from "sonner";
 import { useApp } from "@/lib/app-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
