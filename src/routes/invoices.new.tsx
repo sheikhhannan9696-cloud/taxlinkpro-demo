@@ -356,12 +356,38 @@ function CreateInvoicePage() {
             ) : (
               <div className="flex gap-2">
                 <Button variant="outline" onClick={() => toast.success("Draft saved")}><Save className="h-4 w-4" /> Save draft</Button>
-                <Button onClick={() => { toast.success(env === "production" ? "Submitted to FBR" : "Submitted to Sandbox"); navigate({ to: "/invoices" }); }}>
-                  <Send className="h-4 w-4" /> {env === "production" ? "Submit to FBR" : "Submit to Sandbox"}
+                <Button onClick={() => {
+                  const num = `FBR-SBX-${Math.floor(100000 + Math.random() * 900000)}`;
+                  setFbrNumber(num);
+                  setSubmitOpen(true);
+                }}>
+                  <Send className="h-4 w-4" /> Submit to FBR
                 </Button>
               </div>
             )}
           </div>
+
+          <Dialog open={submitOpen} onOpenChange={setSubmitOpen}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-success/10">
+                  <CheckCircle2 className="h-6 w-6 text-success" />
+                </div>
+                <DialogTitle className="text-center">Invoice submitted successfully</DialogTitle>
+                <DialogDescription className="text-center">
+                  Your invoice has been successfully sent to FBR in the <span className="font-medium text-foreground">sandbox environment</span>.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="my-2 rounded-lg border border-border bg-surface-muted/40 p-4 text-center">
+                <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">FBR Invoice Number</div>
+                <div className="mt-1 font-mono text-lg font-semibold tabular-nums">{fbrNumber}</div>
+              </div>
+              <DialogFooter className="sm:justify-center">
+                <Button variant="outline" onClick={() => setSubmitOpen(false)}>Close</Button>
+                <Button onClick={() => { setSubmitOpen(false); navigate({ to: "/invoices" }); }}>View invoices</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Sticky summary */}
