@@ -57,19 +57,17 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function DashboardPage() {
-  const recent = invoices.slice(0, 6);
-  const failures = invoices.filter((i) => i.status === "failed").slice(0, 3);
+  const recent = invoices.slice(0, 10);
   const topBuyers = [...buyers].sort((a, b) => b.revenue - a.revenue).slice(0, 5);
   const topProducts = [...products].sort((a, b) => b.revenue - a.revenue).slice(0, 5);
 
   return (
     <AppShell>
       <PageHeader
-        title="Welcome back, Ayesha"
-        description="Operational overview for Acme Trading · April 2025"
+        title="Welcome back, Bilal"
+        description="Operational overview for MediCare Pharmaceuticals · April 2025"
         actions={
           <>
-            <Button variant="outline" size="sm"><Upload className="h-4 w-4" /> Import Excel</Button>
             <Button variant="outline" size="sm"><FileJson className="h-4 w-4" /> Validate JSON</Button>
             <Button asChild size="sm"><Link to="/invoices/new"><Plus className="h-4 w-4" /> New Invoice</Link></Button>
           </>
