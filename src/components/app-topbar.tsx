@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Bell, Search, Plus, Sun, Moon, Menu, ChevronDown, LogOut, Settings as SettingsIcon, User } from "lucide-react";
+import { Bell, Search, Plus, Sun, Moon, Menu, ChevronDown, LogOut, Settings as SettingsIcon, User, Lock } from "lucide-react";
+import { toast } from "sonner";
 import { useApp } from "@/lib/app-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,10 +50,18 @@ export function AppTopbar({ onOpenMobileNav }: { onOpenMobileNav: () => void }) 
               Sandbox
               <span className="ml-auto text-xs text-muted-foreground">testing</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setEnv("production")}>
-              <span className="mr-2 h-1.5 w-1.5 rounded-full bg-success" />
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.preventDefault();
+                toast.error("Not allowed", {
+                  description: "Production environment access is disabled for this workspace.",
+                });
+              }}
+              className="opacity-70"
+            >
+              <Lock className="mr-2 h-3 w-3" />
               Production
-              <span className="ml-auto text-xs text-muted-foreground">live</span>
+              <span className="ml-auto text-xs text-muted-foreground">locked</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

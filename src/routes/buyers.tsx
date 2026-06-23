@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Search, Plus, Filter, Upload, MapPin, FileText, Eye, FilePlus2 } from "lucide-react";
+import { Search, Plus, Filter, MapPin, Eye, FilePlus2 } from "lucide-react";
 import { AppShell, PageHeader } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +42,6 @@ function BuyersPage() {
         description="Master directory of buyers used across all invoices."
         actions={
           <>
-            <Button variant="outline" size="sm"><Upload className="h-4 w-4" /> Import</Button>
             <Sheet>
               <SheetTrigger asChild>
                 <Button size="sm"><Plus className="h-4 w-4" /> New buyer</Button>

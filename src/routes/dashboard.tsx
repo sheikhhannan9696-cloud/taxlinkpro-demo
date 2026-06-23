@@ -9,12 +9,7 @@ import {
   TrendingUp,
   ShieldCheck,
   Plus,
-  Upload,
   FileJson,
-  Send,
-  Download,
-  AlertTriangle,
-  Activity,
   ArrowRight,
 } from "lucide-react";
 import {
@@ -57,19 +52,17 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function DashboardPage() {
-  const recent = invoices.slice(0, 6);
-  const failures = invoices.filter((i) => i.status === "failed").slice(0, 3);
+  const recent = invoices.slice(0, 10);
   const topBuyers = [...buyers].sort((a, b) => b.revenue - a.revenue).slice(0, 5);
   const topProducts = [...products].sort((a, b) => b.revenue - a.revenue).slice(0, 5);
 
   return (
     <AppShell>
       <PageHeader
-        title="Welcome back, Ayesha"
-        description="Operational overview for Acme Trading · April 2025"
+        title="Welcome back, Bilal"
+        description="Operational overview for MediCare Pharmaceuticals · April 2025"
         actions={
           <>
-            <Button variant="outline" size="sm"><Upload className="h-4 w-4" /> Import Excel</Button>
             <Button variant="outline" size="sm"><FileJson className="h-4 w-4" /> Validate JSON</Button>
             <Button asChild size="sm"><Link to="/invoices/new"><Plus className="h-4 w-4" /> New Invoice</Link></Button>
           </>
@@ -161,11 +154,14 @@ function DashboardPage() {
         </div>
       </div>
 
-      {/* Activity + side panels */}
-      <div className="mt-6 grid gap-4 lg:grid-cols-3">
-        <div className="rounded-xl border border-border bg-card shadow-card lg:col-span-2">
+      {/* Activity — full width, extended */}
+      <div className="mt-6">
+        <div className="rounded-xl border border-border bg-card shadow-card">
           <div className="flex items-center justify-between border-b border-border px-5 py-3">
-            <div className="text-sm font-semibold">Recent invoice activity</div>
+            <div>
+              <div className="text-sm font-semibold">Recent invoice activity</div>
+              <div className="text-xs text-muted-foreground">Latest {recent.length} invoices across all environments</div>
+            </div>
             <Button asChild variant="ghost" size="sm" className="text-xs"><Link to="/invoices">View all <ArrowRight className="h-3 w-3" /></Link></Button>
           </div>
           <div className="overflow-x-auto">
@@ -173,9 +169,12 @@ function DashboardPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Invoice</TableHead>
+                  <TableHead>FBR Ref</TableHead>
                   <TableHead>Buyer</TableHead>
+                  <TableHead>Sale type</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
+                  <TableHead className="text-right">Tax</TableHead>
                   <TableHead>Env</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
@@ -183,52 +182,21 @@ function DashboardPage() {
               <TableBody>
                 {recent.map((inv) => (
                   <TableRow key={inv.id}>
-                    <TableCell className="font-medium">{inv.id}</TableCell>
-                    <TableCell className="max-w-[200px] truncate">{inv.buyer}</TableCell>
+                    <TableCell className="font-medium">
+                      <Link to="/invoices/$invoiceId" params={{ invoiceId: inv.id }} className="hover:text-primary hover:underline">{inv.id}</Link>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground tabular-nums">{inv.ref}</TableCell>
+                    <TableCell className="max-w-[220px] truncate">{inv.buyer}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{inv.saleType}</TableCell>
                     <TableCell className="text-muted-foreground">{inv.date}</TableCell>
                     <TableCell className="text-right tabular-nums">{currency(inv.amount)}</TableCell>
+                    <TableCell className="text-right tabular-nums text-muted-foreground">{currency(inv.tax)}</TableCell>
                     <TableCell><EnvBadge env={inv.env} /></TableCell>
                     <TableCell><StatusBadge status={inv.status} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-
-          {/* Failures */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-card">
-            <div className="mb-3 flex items-center justify-between">
-              <div className="text-sm font-semibold">Needs attention</div>
-              <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-[10px] font-medium text-destructive">{failures.length}</span>
-            </div>
-            <div className="space-y-2">
-              {failures.map((f) => (
-                <div key={f.id} className="flex items-start gap-2.5 rounded-lg border border-border bg-surface-muted/40 p-2.5">
-                  <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
-                  <div className="min-w-0 flex-1">
-                    <div className="text-xs font-medium">{f.id}</div>
-                    <div className="truncate text-[11px] text-muted-foreground">{f.buyer} · {currency(f.amount)}</div>
-                  </div>
-                  <Button variant="ghost" size="sm" className="h-7 px-2 text-[11px]">Review</Button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick actions */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-card">
-            <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
-              <Activity className="h-4 w-4 text-primary" /> Quick actions
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" size="sm" className="justify-start"><Send className="h-3.5 w-3.5" /> Submit batch</Button>
-              <Button variant="outline" size="sm" className="justify-start"><Download className="h-3.5 w-3.5" /> Bulk PDFs</Button>
-              <Button variant="outline" size="sm" className="justify-start"><FileEdit className="h-3.5 w-3.5" /> Resume draft</Button>
-              <Button variant="outline" size="sm" className="justify-start"><Upload className="h-3.5 w-3.5" /> Import</Button>
-            </div>
           </div>
         </div>
       </div>

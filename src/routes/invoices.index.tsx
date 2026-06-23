@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Search, Filter, Download, Send, Upload, FileJson, MoreHorizontal, Eye, Trash2, Plus } from "lucide-react";
+import { Search, Filter, Download, Send, FileJson, MoreHorizontal, Eye, Trash2, Plus } from "lucide-react";
 import { AppShell, PageHeader } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,7 +52,6 @@ function InvoicesPage() {
         description="View, validate, and submit your invoices to FBR."
         actions={
           <>
-            <Button variant="outline" size="sm"><Upload className="h-4 w-4" /> Import Excel</Button>
             <Button variant="outline" size="sm"><FileJson className="h-4 w-4" /> Validate JSON</Button>
             <Button asChild size="sm"><Link to="/invoices/new"><Plus className="h-4 w-4" /> New Invoice</Link></Button>
           </>

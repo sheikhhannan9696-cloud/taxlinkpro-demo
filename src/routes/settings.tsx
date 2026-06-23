@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell, PageHeader } from "@/components/app-shell";
-import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -70,11 +70,14 @@ function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="integrations">
-          <Section title="FBR API" description="Connection to FBR e-Invoicing endpoints.">
-            <Field label="Sandbox endpoint"><Input defaultValue="https://gw.fbr.gov.pk/sandbox/v1" /></Field>
-            <Field label="Production endpoint"><Input defaultValue="https://gw.fbr.gov.pk/production/v1" /></Field>
-            <Field label="API token"><Input type="password" defaultValue="••••••••••••••••" /></Field>
-            <div className="pt-2"><Button>Save changes</Button></div>
+          <Section title="FBR API" description="Connection to FBR e-Invoicing endpoints. These details are managed by your administrator and cannot be edited.">
+            <Field label="Sandbox endpoint"><Input value="https://gw.fbr.gov.pk/sandbox/v1" readOnly disabled /></Field>
+            <Field label="Production endpoint"><Input value="https://gw.fbr.gov.pk/production/v1" readOnly disabled /></Field>
+            <Field label="API token"><Input type="password" value="••••••••••••••••" readOnly disabled /></Field>
+            <div className="flex items-center gap-2 rounded-md border border-border bg-surface-muted/40 px-3 py-2 text-xs text-muted-foreground">
+              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-success" />
+              Locked — contact your workspace administrator to change FBR integration settings.
+            </div>
           </Section>
         </TabsContent>
 
