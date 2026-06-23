@@ -74,6 +74,8 @@ function CreateInvoicePage() {
     { productId: products[0].id, qty: 10, rate: products[0].rate, taxRate: products[0].taxRate },
   ]);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [submitOpen, setSubmitOpen] = useState(false);
+  const [fbrNumber, setFbrNumber] = useState<string>("");
 
   const profile = businessProfiles.find((p) => p.id === profileId)!;
   const buyer = buyers.find((b) => b.id === buyerId)!;
