@@ -14,7 +14,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const storedTheme = (localStorage.getItem("tlp:theme") as "light" | "dark") || "light";
     const storedEnv = (localStorage.getItem("tlp:env") as Environment) || "sandbox";
     setThemeState(storedTheme);
-    setEnvState(storedEnv);
+    // Production is locked in this demo — always force sandbox.
+    setEnvState(storedEnv === "production" ? "sandbox" : storedEnv);
     const rawUser = localStorage.getItem("tlp:user");
     if (rawUser) {
       try { setUser(JSON.parse(rawUser)); } catch { setUser(DEFAULT_USER); }
