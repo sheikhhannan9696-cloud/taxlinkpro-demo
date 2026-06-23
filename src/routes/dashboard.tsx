@@ -9,12 +9,7 @@ import {
   TrendingUp,
   ShieldCheck,
   Plus,
-  Upload,
   FileJson,
-  Send,
-  Download,
-  AlertTriangle,
-  Activity,
   ArrowRight,
 } from "lucide-react";
 import {
