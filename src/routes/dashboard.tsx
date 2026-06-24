@@ -218,7 +218,7 @@ function DashboardPage() {
                 </div>
                 <div className="text-right tabular-nums">
                   <div className="text-sm font-semibold">{currency(b.revenue)}</div>
-                  <Trend value={Math.floor(Math.random() * 30 - 5)} />
+                  <Trend value={((i * 7 + 11) % 30) - 5} />
                 </div>
               </div>
             ))}

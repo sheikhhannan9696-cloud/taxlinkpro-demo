@@ -57,15 +57,14 @@ function ProductsPage() {
                     <div className="space-y-1.5"><Label>HS Code</Label><Input placeholder="2523.2900" /></div>
                     <div className="space-y-1.5">
                       <Label>UOM</Label>
-                      <Select defaultValue="bag">
+                      <Select defaultValue="number">
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="bag">Bag</SelectItem>
-                          <SelectItem value="tonne">Tonne</SelectItem>
-                          <SelectItem value="kg">Kg</SelectItem>
-                          <SelectItem value="pcs">Pcs</SelectItem>
-                          <SelectItem value="meter">Meter</SelectItem>
-                          <SelectItem value="service">Service</SelectItem>
+                          <SelectItem value="number">Number</SelectItem>
+                          <SelectItem value="pieces">Pieces</SelectItem>
+                          <SelectItem value="units">Units</SelectItem>
+                          <SelectItem value="kg">KG</SelectItem>
+                          <SelectItem value="mm">mm</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
