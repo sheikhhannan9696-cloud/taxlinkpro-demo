@@ -91,7 +91,7 @@ export function AppSidebar({ onNavigate }: { onNavigate?: () => void }) {
         </div>
         <div className="leading-tight">
           <div className="text-sm font-semibold text-sidebar-accent-foreground">TaxLink Pro</div>
-          <div className="text-[11px] text-sidebar-foreground/60">FBR e-Invoicing</div>
+          <div className="text-[11px] text-sidebar-foreground/60">FBR e-Invoicing Software Demo</div>
         </div>
       </div>
 
