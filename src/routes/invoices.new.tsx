@@ -307,14 +307,25 @@ function CreateInvoicePage() {
                             </Button>
                           </div>
                         </div>
-                        <div className="mt-3 flex items-center justify-between border-t border-border pt-3 text-sm">
-                          <span className="text-xs text-muted-foreground">Line total</span>
-                          <span className="font-semibold tabular-nums">{currency(item.qty * item.rate * (1 + item.taxRate / 100))}</span>
+                        <div className="mt-3 grid grid-cols-3 gap-3 border-t border-border pt-3 text-xs">
+                          <div>
+                            <div className="text-muted-foreground">Value excl. sales tax</div>
+                            <div className="mt-0.5 font-medium tabular-nums">{currency(item.qty * item.rate)}</div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Sales tax ({item.taxRate}%)</div>
+                            <div className="mt-0.5 font-medium tabular-nums">{currency(item.qty * item.rate * (item.taxRate / 100))}</div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Value incl. sales tax</div>
+                            <div className="mt-0.5 font-semibold tabular-nums">{currency(item.qty * item.rate * (1 + item.taxRate / 100))}</div>
+                          </div>
                         </div>
                       </div>
                     );
                   })}
                 </div>
+                <Button size="sm" variant="outline" onClick={addItem} className="w-full sm:w-auto"><Plus className="h-4 w-4" /> Add item</Button>
 
                 <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
                   <CollapsibleTrigger className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
