@@ -403,8 +403,11 @@ function CreateInvoicePage() {
                 <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">FBR Invoice Number</div>
                 <div className="mt-1 font-mono text-lg font-semibold tabular-nums">{fbrNumber}</div>
               </div>
-              <DialogFooter className="sm:justify-center">
+              <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-center">
                 <Button variant="outline" onClick={() => setSubmitOpen(false)}>Close</Button>
+                <Button variant="outline" onClick={() => generateInvoicePdf({ fbrNumber, profile, buyer, items, subtotal, tax, total })}>
+                  <FileText className="h-4 w-4" /> Generate invoice PDF
+                </Button>
                 <Button onClick={() => { setSubmitOpen(false); navigate({ to: "/invoices" }); }}>View invoices</Button>
               </DialogFooter>
             </DialogContent>
