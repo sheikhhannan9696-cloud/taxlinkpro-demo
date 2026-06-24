@@ -503,8 +503,8 @@ function generateInvoicePdf({
 
   const qrPayload = encodeURIComponent(`FBR:${fbrNumber}|Seller:${profile.ntn}|Buyer:${buyer.ntn || buyer.cnic || "-"}|Total:${total.toFixed(2)}`);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=${qrPayload}`;
-  const logoUrl = `${window.location.origin}${medicareLogo.url}`;
-  const fbrLogoUrl = `${window.location.origin}${fbrDigitalLogo.url}`;
+  const logoUrl = "https://res.cloudinary.com/ddqb4i7st/image/upload/v1782263659/Airbrush-IMAGE-ENHANCER-1782263630700-1782263630700_il2da6.png";
+  const fbrLogoUrl = "https://res.cloudinary.com/ddqb4i7st/image/upload/v1782263759/fbrdigitalinvoicing_wfx1k7.png";
   const invDate = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 
   const html = `<!doctype html><html><head><meta charset="utf-8"/><title>Invoice ${fbrNumber}</title>
