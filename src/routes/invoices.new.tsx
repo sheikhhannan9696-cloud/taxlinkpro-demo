@@ -39,8 +39,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { businessProfiles, buyers, products, currency } from "@/lib/mock-data";
-import medicareLogo from "@/assets/medicare-logo.png.asset.json";
-import fbrDigitalLogo from "@/assets/fbr-digital.png.asset.json";
 import { useApp } from "@/lib/app-state";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
