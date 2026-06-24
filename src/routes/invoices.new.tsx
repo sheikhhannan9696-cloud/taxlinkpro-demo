@@ -39,6 +39,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { businessProfiles, buyers, products, currency } from "@/lib/mock-data";
+import medicareLogo from "@/assets/medicare-logo.png.asset.json";
+import fbrDigitalLogo from "@/assets/fbr-digital.png.asset.json";
 import { useApp } from "@/lib/app-state";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -501,55 +503,129 @@ function generateInvoicePdf({
     })
     .join("");
 
+  const qrPayload = encodeURIComponent(`FBR:${fbrNumber}|Seller:${profile.ntn}|Buyer:${buyer.ntn || buyer.cnic || "-"}|Total:${total.toFixed(2)}`);
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=${qrPayload}`;
+  const logoUrl = `${window.location.origin}${medicareLogo.url}`;
+  const fbrLogoUrl = `${window.location.origin}${fbrDigitalLogo.url}`;
+  const invDate = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+
   const html = `<!doctype html><html><head><meta charset="utf-8"/><title>Invoice ${fbrNumber}</title>
   <style>
-    *{box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#111;margin:32px;font-size:12px}
-    h1{font-size:22px;margin:0 0 4px}.muted{color:#666}.row{display:flex;justify-content:space-between;gap:24px;margin-bottom:24px}
-    .box{border:1px solid #ddd;border-radius:8px;padding:12px 14px;flex:1}
-    .label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:4px}
-    table{width:100%;border-collapse:collapse;margin-top:8px}
-    th,td{padding:8px 10px;border-bottom:1px solid #eee;text-align:left}
-    th{background:#f7f7f9;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#555}
+    *{box-sizing:border-box}
+    body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0f172a;margin:0;padding:40px;font-size:11.5px;background:#fff}
+    .sheet{max-width:780px;margin:0 auto;position:relative}
+    .header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #1e293b;padding-bottom:18px;margin-bottom:22px}
+    .brand{display:flex;gap:14px;align-items:center}
+    .brand img{height:64px;width:auto;object-fit:contain}
+    .brand .name{font-size:18px;font-weight:700;color:#1e293b;letter-spacing:.2px}
+    .brand .tag{font-size:10px;color:#64748b;margin-top:2px}
+    .doc-meta{text-align:right}
+    .doc-meta .title{font-size:22px;font-weight:700;color:#312e81;letter-spacing:1px;margin:0}
+    .doc-meta .num{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#1e293b;margin-top:6px}
+    .doc-meta .date{font-size:10.5px;color:#64748b;margin-top:2px}
+    .meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+    .box{border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;background:#f8fafc}
+    .label{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;margin-bottom:6px;font-weight:600}
+    .strong{font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px}
+    .muted{color:#64748b;font-size:10.5px;line-height:1.5}
+    table{width:100%;border-collapse:collapse;margin-top:6px;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
+    thead th{background:#1e293b;color:#fff;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;padding:9px 8px;text-align:left;font-weight:600}
+    tbody td{padding:9px 8px;border-bottom:1px solid #f1f5f9;font-size:11px}
+    tbody tr:nth-child(even){background:#f8fafc}
+    tbody tr:last-child td{border-bottom:none}
     .num{text-align:right;font-variant-numeric:tabular-nums}
-    .totals{margin-top:16px;margin-left:auto;width:280px}
-    .totals .line{display:flex;justify-content:space-between;padding:6px 0}
-    .totals .grand{border-top:2px solid #111;font-weight:700;font-size:14px;padding-top:10px;margin-top:6px}
-    .stamp{margin-top:24px;padding:10px 14px;border:1px dashed #888;border-radius:8px;display:inline-block}
-    .stamp b{font-family:ui-monospace,Menlo,monospace}
+    .totals{margin-top:14px;margin-left:auto;width:300px;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden}
+    .totals .line{display:flex;justify-content:space-between;padding:9px 14px;font-size:11.5px}
+    .totals .line+.line{border-top:1px solid #f1f5f9}
+    .totals .grand{background:#312e81;color:#fff;font-weight:700;font-size:13.5px;padding:11px 14px}
+    .footer{margin-top:32px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+    .footer-left{flex:1;font-size:10px;color:#64748b;line-height:1.6}
+    .footer-left .sig{margin-top:36px;border-top:1px solid #cbd5e1;padding-top:6px;width:180px;text-align:center;color:#475569}
+    .badges{display:flex;gap:10px;align-items:flex-end}
+    .badge{width:96px;height:96px;border:1px solid #e2e8f0;border-radius:8px;padding:4px;background:#fff;display:flex;align-items:center;justify-content:center}
+    .badge img{max-width:100%;max-height:100%;object-fit:contain}
+    .badge-label{font-size:8.5px;text-align:center;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+    .badge-wrap{display:flex;flex-direction:column;align-items:center}
+    @media print{body{padding:20px}}
   </style></head><body>
-  <div class="row"><div>
-    <h1>${profile.name}</h1>
-    <div class="muted">${profile.address}</div>
-    <div class="muted">NTN ${profile.ntn} · STRN ${profile.strn}</div>
-  </div><div style="text-align:right">
-    <div class="label">Tax Invoice</div>
-    <div style="font-size:14px;font-weight:600">${fbrNumber}</div>
-    <div class="muted">${new Date().toLocaleDateString()}</div>
-  </div></div>
-  <div class="row">
-    <div class="box"><div class="label">Billed to</div>
-      <div style="font-weight:600">${buyer.name}</div>
-      <div class="muted">${buyer.city}, ${buyer.province}</div>
-      ${buyer.ntn ? `<div class="muted">NTN ${buyer.ntn}</div>` : ""}
-      ${buyer.strn ? `<div class="muted">STRN ${buyer.strn}</div>` : ""}
+    <div class="sheet">
+      <div class="header">
+        <div class="brand">
+          <img src="${logoUrl}" alt="logo"/>
+          <div>
+            <div class="name">${profile.name}</div>
+            <div class="tag">${profile.address}</div>
+            <div class="tag">NTN ${profile.ntn} · STRN ${profile.strn}</div>
+          </div>
+        </div>
+        <div class="doc-meta">
+          <div class="title">TAX INVOICE</div>
+          <div class="num">${fbrNumber}</div>
+          <div class="date">${invDate}</div>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="box">
+          <div class="label">Billed to</div>
+          <div class="strong">${buyer.name}</div>
+          <div class="muted">${buyer.city}, ${buyer.province}</div>
+          ${buyer.ntn ? `<div class="muted">NTN ${buyer.ntn}</div>` : ""}
+          ${buyer.strn ? `<div class="muted">STRN ${buyer.strn}</div>` : ""}
+          ${buyer.cnic ? `<div class="muted">CNIC ${buyer.cnic}</div>` : ""}
+        </div>
+        <div class="box">
+          <div class="label">FBR submission</div>
+          <div class="strong">Accepted</div>
+          <div class="muted">Environment: Sandbox</div>
+          <div class="muted">Reference: ${fbrNumber}</div>
+          <div class="muted">Submitted: ${invDate}</div>
+        </div>
+      </div>
+
+      <table>
+        <thead><tr>
+          <th>Product</th><th class="num">HS Code</th><th class="num">UOM</th><th class="num">Qty</th><th class="num">Rate</th>
+          <th class="num">Value excl.</th><th class="num">Tax %</th><th class="num">Sales tax</th><th class="num">Value incl.</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+
+      <div class="totals">
+        <div class="line"><span>Subtotal</span><span class="num">PKR ${subtotal.toFixed(2)}</span></div>
+        <div class="line"><span>Sales tax</span><span class="num">PKR ${tax.toFixed(2)}</span></div>
+        <div class="grand" style="display:flex;justify-content:space-between"><span>Total</span><span class="num">PKR ${total.toFixed(2)}</span></div>
+      </div>
+
+      <div class="footer">
+        <div class="footer-left">
+          <div>This is a system-generated invoice digitally submitted to the Federal Board of Revenue (FBR), Pakistan.</div>
+          <div style="margin-top:4px">Scan the QR code to verify this invoice with FBR.</div>
+          <div class="sig">Authorised Signature</div>
+        </div>
+        <div class="badges">
+          <div class="badge-wrap">
+            <div class="badge"><img src="${qrUrl}" alt="QR"/></div>
+            <div class="badge-label">FBR Verification</div>
+          </div>
+          <div class="badge-wrap">
+            <div class="badge"><img src="${fbrLogoUrl}" alt="FBR Digital Invoicing"/></div>
+            <div class="badge-label">Digital Invoicing</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="box"><div class="label">FBR submission</div>
-      <div class="muted">Environment: Sandbox</div>
-      <div class="muted">Status: Accepted</div>
-      <div class="muted">Reference: ${fbrNumber}</div>
-    </div>
-  </div>
-  <table><thead><tr>
-    <th>Product</th><th class="num">HS Code</th><th class="num">UOM</th><th class="num">Qty</th><th class="num">Rate</th>
-    <th class="num">Value excl. tax</th><th class="num">Tax %</th><th class="num">Sales tax</th><th class="num">Value incl. tax</th>
-  </tr></thead><tbody>${rows}</tbody></table>
-  <div class="totals">
-    <div class="line"><span class="muted">Subtotal</span><span class="num">${subtotal.toFixed(2)}</span></div>
-    <div class="line"><span class="muted">Sales tax</span><span class="num">${tax.toFixed(2)}</span></div>
-    <div class="line grand"><span>Total (PKR)</span><span class="num">${total.toFixed(2)}</span></div>
-  </div>
-  <div class="stamp">FBR Invoice Number: <b>${fbrNumber}</b></div>
-  <script>window.onload=()=>{setTimeout(()=>window.print(),200)}</script>
+    <script>
+      (function(){
+        var imgs = document.images, loaded = 0, total = imgs.length;
+        function done(){ if(++loaded >= total) setTimeout(function(){ window.print(); }, 250); }
+        if(!total) return setTimeout(function(){ window.print(); }, 250);
+        for(var i=0;i<imgs.length;i++){
+          if(imgs[i].complete) done();
+          else { imgs[i].addEventListener('load', done); imgs[i].addEventListener('error', done); }
+        }
+      })();
+    </script>
   </body></html>`;
 
   const w = window.open("", "_blank");
