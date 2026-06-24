@@ -463,3 +463,101 @@ function SummaryRow({ label, value, mono }: { label: string; value: string; mono
     </div>
   );
 }
+
+function generateInvoicePdf({
+  fbrNumber,
+  profile,
+  buyer,
+  items,
+  subtotal,
+  tax,
+  total,
+}: {
+  fbrNumber: string;
+  profile: (typeof businessProfiles)[number];
+  buyer: (typeof buyers)[number];
+  items: LineItem[];
+  subtotal: number;
+  tax: number;
+  total: number;
+}) {
+  const rows = items
+    .map((it) => {
+      const p = products.find((pp) => pp.id === it.productId)!;
+      const excl = it.qty * it.rate;
+      const stax = excl * (it.taxRate / 100);
+      const incl = excl + stax;
+      return `<tr>
+        <td>${p.name}</td>
+        <td class="num">${p.hsCode}</td>
+        <td class="num">${p.uom}</td>
+        <td class="num">${it.qty}</td>
+        <td class="num">${it.rate.toFixed(2)}</td>
+        <td class="num">${excl.toFixed(2)}</td>
+        <td class="num">${it.taxRate}%</td>
+        <td class="num">${stax.toFixed(2)}</td>
+        <td class="num">${incl.toFixed(2)}</td>
+      </tr>`;
+    })
+    .join("");
+
+  const html = `<!doctype html><html><head><meta charset="utf-8"/><title>Invoice ${fbrNumber}</title>
+  <style>
+    *{box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#111;margin:32px;font-size:12px}
+    h1{font-size:22px;margin:0 0 4px}.muted{color:#666}.row{display:flex;justify-content:space-between;gap:24px;margin-bottom:24px}
+    .box{border:1px solid #ddd;border-radius:8px;padding:12px 14px;flex:1}
+    .label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:4px}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{padding:8px 10px;border-bottom:1px solid #eee;text-align:left}
+    th{background:#f7f7f9;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#555}
+    .num{text-align:right;font-variant-numeric:tabular-nums}
+    .totals{margin-top:16px;margin-left:auto;width:280px}
+    .totals .line{display:flex;justify-content:space-between;padding:6px 0}
+    .totals .grand{border-top:2px solid #111;font-weight:700;font-size:14px;padding-top:10px;margin-top:6px}
+    .stamp{margin-top:24px;padding:10px 14px;border:1px dashed #888;border-radius:8px;display:inline-block}
+    .stamp b{font-family:ui-monospace,Menlo,monospace}
+  </style></head><body>
+  <div class="row"><div>
+    <h1>${profile.name}</h1>
+    <div class="muted">${profile.address}</div>
+    <div class="muted">NTN ${profile.ntn} · STRN ${profile.strn}</div>
+  </div><div style="text-align:right">
+    <div class="label">Tax Invoice</div>
+    <div style="font-size:14px;font-weight:600">${fbrNumber}</div>
+    <div class="muted">${new Date().toLocaleDateString()}</div>
+  </div></div>
+  <div class="row">
+    <div class="box"><div class="label">Billed to</div>
+      <div style="font-weight:600">${buyer.name}</div>
+      <div class="muted">${buyer.city}, ${buyer.province}</div>
+      ${buyer.ntn ? `<div class="muted">NTN ${buyer.ntn}</div>` : ""}
+      ${buyer.strn ? `<div class="muted">STRN ${buyer.strn}</div>` : ""}
+    </div>
+    <div class="box"><div class="label">FBR submission</div>
+      <div class="muted">Environment: Sandbox</div>
+      <div class="muted">Status: Accepted</div>
+      <div class="muted">Reference: ${fbrNumber}</div>
+    </div>
+  </div>
+  <table><thead><tr>
+    <th>Product</th><th class="num">HS Code</th><th class="num">UOM</th><th class="num">Qty</th><th class="num">Rate</th>
+    <th class="num">Value excl. tax</th><th class="num">Tax %</th><th class="num">Sales tax</th><th class="num">Value incl. tax</th>
+  </tr></thead><tbody>${rows}</tbody></table>
+  <div class="totals">
+    <div class="line"><span class="muted">Subtotal</span><span class="num">${subtotal.toFixed(2)}</span></div>
+    <div class="line"><span class="muted">Sales tax</span><span class="num">${tax.toFixed(2)}</span></div>
+    <div class="line grand"><span>Total (PKR)</span><span class="num">${total.toFixed(2)}</span></div>
+  </div>
+  <div class="stamp">FBR Invoice Number: <b>${fbrNumber}</b></div>
+  <script>window.onload=()=>{setTimeout(()=>window.print(),200)}</script>
+  </body></html>`;
+
+  const w = window.open("", "_blank");
+  if (!w) {
+    toast.error("Please allow popups to generate the PDF");
+    return;
+  }
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+}
