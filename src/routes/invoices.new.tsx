@@ -189,6 +189,16 @@ function CreateInvoicePage() {
                   <p className="text-sm text-muted-foreground">Reference numbers, date, and FBR scenario context.</p>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label>Invoice type</Label>
+                    <Select defaultValue="sale">
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="sale">Sale Invoice</SelectItem>
+                        <SelectItem value="debit">Debit Note</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <div className="space-y-1.5"><Label>Invoice reference</Label><Input defaultValue="INV-2025-0242" /></div>
                   <div className="space-y-1.5"><Label>Invoice date</Label><Input type="date" defaultValue="2025-04-25" /></div>
                   <div className="space-y-1.5"><Label>PO Number</Label><Input placeholder="Optional" /></div>
